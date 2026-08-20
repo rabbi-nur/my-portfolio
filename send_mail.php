@@ -1,44 +1,33 @@
 <?php
-header('Content-Type: application/json');
-
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $to = " rabinur@proton.me"; // <-- Change this email later
+    $subject = "Contact Form Submission";
 
-    if (!empty($_POST['website'])) {
-        exit;
-    }
+    $name = htmlspecialchars($_POST['name']);
+    $email = htmlspecialchars($_POST['email']);
+    $form_subject = htmlspecialchars($_POST['subject']);
+    $message = htmlspecialchars($_POST['message']);
 
-    $name    = trim($_POST['name'] ?? '');
-    $email   = trim($_POST['email'] ?? '');
-    $subject = trim($_POST['subject'] ?? 'New message from portfolio');
-    $message = trim($_POST['message'] ?? '');
+    $body = "
+    <h2>Contact Form Submission</h2>
+    <p><strong>Name:</strong> $name</p>
+    <p><strong>Email:</strong> $email</p>
+    <p><strong>Subject:</strong> $form_subject</p>
+    <p><strong>Message:</strong><br>$message</p>
+    ";
 
-    if (empty($name) || empty($email) || empty($message)) {
-        echo json_encode(["status" => "error", "message" => "Please fill in all required fields."]);
-        exit;
-    }
-    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        echo json_encode(["status" => "error", "message" => "Invalid email address."]);
-        exit;
-    }
-
-    $to = "rabbinur@proton.me";
-    $emailSubject = "Portfolio Contact: " . $subject;
-
-    $emailBody = "Name: $name\n";
-    $emailBody .= "Email: $email\n";
-    $emailBody .= "Subject: $subject\n\n";
-    $emailBody .= "Message:\n$message\n";
-
-    $headers = "From: no-reply@yourdomain.com\r\n";
+    // Email headers
+  
+    $headers  = "MIME-Version: 1.0\r\n";
+    $headers .= "Content-type:text/html;charset=UTF-8\r\n";
+    $headers .= "From: {$name} <$to>\r\n";
     $headers .= "Reply-To: $email\r\n";
-    $headers .= "X-Mailer: PHP/" . phpversion();
 
-    if (mail($to, $emailSubject, $emailBody, $headers)) {
-        echo json_encode(["status" => "success", "message" => "Your message has been sent. Thank you!"]);
+
+    if (mail($to, $subject, $body, $headers)) {
+        echo "<script>alert('Message sent successfully!'); window.location.href='index.php';</script>";
     } else {
-        echo json_encode(["status" => "error", "message" => "Something went wrong. Please try again later."]);
+        echo "<script>alert('Message sending failed. Try again.'); window.history.back();</script>";
     }
-    exit;
 }
-
-echo json_encode(["status" => "error", "message" => "Invalid request."]);
+?>
