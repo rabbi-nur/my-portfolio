@@ -1018,6 +1018,33 @@
       color: var(--forest);
     }
 
+    /* for mail  */
+    .email-wrapper {
+      display: inline-flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .c-icon {
+      font-size: 18px;
+    }
+
+    .email-reveal {
+      cursor: pointer;
+      color: #ffffff;
+      transition: color .3s ease;
+    }
+
+    .email-reveal:hover {
+      color: #ffffff;
+    }
+
+    .email-reveal a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+
     /* ======= RESPONSIVE ======= */
     @media(max-width:900px) {
       nav.links {
@@ -1156,7 +1183,8 @@
           <h2>I build websites and keep them alive long after launch.</h2>
           <p>My work covers the full journey — from <strong>design and front-end development</strong> to
             <strong>application support, website maintenance</strong>, and day-to-day <strong>IT support for
-              users</strong>. I don't just hand things off; I stick around to make sure they work.</p>
+              users</strong>. I don't just hand things off; I stick around to make sure they work.
+          </p>
           <p>Before joining Divine Group, I worked as an <strong>Associate Software Engineer at Trends Bird
               Limited</strong>, where I customized and developed WordPress sites, eCommerce platforms, and Shopify
             stores for clients across different industries.</p>
@@ -1290,7 +1318,8 @@
                   <p>Delivered a tailored Shopify storefront with custom Liquid template edits, section modifications,
                     homepage redesign, and mobile-first responsive adjustments to match the client's brand identity.</p>
                   <div class="project-tags">
-                    <span>Shopify</span><span>Liquid</span><span>CSS</span><span>Mobile-first</span></div>
+                    <span>Shopify</span><span>Liquid</span><span>CSS</span><span>Mobile-first</span>
+                  </div>
                   <a href="#" class="project-link">View project <i class="fa-solid fa-arrow-right"></i></a>
                 </div>
               </div>
@@ -1307,7 +1336,8 @@
                   <h3>Dr. Anisuzzaman Hospital — Website</h3>
                   <p>Built a responsive hospital website featuring a Bootstrap 5 carousel with multi-breakpoint height
                     fixes, a Specialities section modeled on Evercare Bangladesh's design, and a reusable
-                    <code>.highlight-section</code> component system.</p>
+                    <code>.highlight-section</code> component system.
+                  </p>
                   <div class="project-tags"><span>Bootstrap
                       5</span><span>Responsive</span><span>Carousel</span><span>CSS Components</span></div>
                   <a href="https://dah.com.bd/" class="project-link">View project <i
@@ -1397,10 +1427,21 @@
             <p>Whether it's a new website, a WordPress or Shopify build, IT support, or just a question — drop me a
               message. I respond within 24 hours.</p>
             <div class="contact-info">
-              <a href="mailto:rabbinur@proton.me">
+              <!-- <a href="mailto:rabbinur@proton.me">
                 <span class="c-icon"><i class="fa-solid fa-envelope"></i></span>
                 rabbinur@proton.me
-              </a>
+              </a> -->
+
+              <div class="email-wrapper">
+                <span class="c-icon">
+                  <i class="fa-solid fa-envelope"></i>
+                </span>
+
+                <span id="emailBox" class="email-reveal">
+                  Hover to view email
+                </span>
+              </div>
+
               <a href="tel:+8801989807678">
                 <span class="c-icon"><i class="fa-solid fa-phone"></i></span>
                 +880 1989807678
@@ -1410,6 +1451,7 @@
                 Dhaka, Bangladesh
               </a>
             </div>
+
             <div class="social-row">
               <a href="https://www.linkedin.com/in/rabbi-nur/" aria-label="LinkedIn" style="color:#fff;"><i
                   class="fa-brands fa-linkedin-in"></i></a>
@@ -1513,6 +1555,28 @@
         if (e.key === 'ArrowLeft') goTo(current - 1);
       });
     })();
+
+
+    // ===== Email Reveal =====
+
+    const user = "rabbinur";      // <-- username
+    const domain = "proton.me";   // <-- email domain
+
+    const email = `${user}@${domain}`;
+    const emailBox = document.getElementById("emailBox");
+
+    if (emailBox) {
+
+      emailBox.addEventListener("mouseenter", () => {
+        emailBox.innerHTML = `<a href="mailto:${email}">${email}</a>`;
+      });
+
+      emailBox.addEventListener("mouseleave", () => {
+        emailBox.textContent = "Hover to view email";
+      });
+
+    }
+
   </script>
 </body>
 
