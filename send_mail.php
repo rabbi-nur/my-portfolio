@@ -1,9 +1,10 @@
 <?php
+header('Content-Type: application/json');
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-    // Honeypot check (if you have a hidden field like "website")
     if (!empty($_POST['website'])) {
-        exit; // bot detected, silently stop
+        exit;
     }
 
     $name    = trim($_POST['name'] ?? '');
@@ -11,15 +12,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $subject = trim($_POST['subject'] ?? 'New message from portfolio');
     $message = trim($_POST['message'] ?? '');
 
-    // Basic validation
     if (empty($name) || empty($email) || empty($message)) {
-        die("Please fill in all required fields.");
+        echo json_encode(["status" => "error", "message" => "Please fill in all required fields."]);
+        exit;
     }
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        die("Invalid email address.");
+        echo json_encode(["status" => "error", "message" => "Invalid email address."]);
+        exit;
     }
 
-    $to = "rabbinur@proton.me"; 
+    $to = "rabbinur@proton.me";
     $emailSubject = "Portfolio Contact: " . $subject;
 
     $emailBody = "Name: $name\n";
@@ -27,15 +29,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $emailBody .= "Subject: $subject\n\n";
     $emailBody .= "Message:\n$message\n";
 
-    $headers = "From: no-reply@yourdomain.com\r\n"; // must be your domain
+    $headers = "From: no-reply@yourdomain.com\r\n";
     $headers .= "Reply-To: $email\r\n";
     $headers .= "X-Mailer: PHP/" . phpversion();
 
     if (mail($to, $emailSubject, $emailBody, $headers)) {
-        header("Location: thank-you.html"); // or back with a success message
-        exit;
+        echo json_encode(["status" => "success", "message" => "Your message has been sent. Thank you!"]);
     } else {
-        die("Something went wrong. Please try again later.");
+        echo json_encode(["status" => "error", "message" => "Something went wrong. Please try again later."]);
     }
+    exit;
 }
-?>
+
+echo json_encode(["status" => "error", "message" => "Invalid request."]);
